@@ -52,6 +52,7 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
             }
             ```
             nocase 를 이용하면 foobar 문자열은 Foobar, FOOBAR, fOobar 모두 매칭된다.
+		
 		&nbsp;
 			
         - Wide-character strings : ``wide``는 2 byte 를 하나의 글자로 읽는 인코딩에 대한 문자열을 검색할 때 사용할 수 있다. 대표적으로 Unicode가 해당된다. 단 ASCII 형태 또한 검색하고자 할 경우 ``ascii``를 추가한다.
@@ -72,7 +73,8 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
 		&nbsp;
 			
         - Searching for full words : ``fullword``는 숫자나 문자가 올 경우 이를 구분하게 된다. 예를 들어 "UPX0" 라는 단어가 "aUPX0bb", "1UPX0" 등이 올 경우 이는 매칭이 되지 않는다. 하지만 "...UPX0", "UPX0_", " UPX0 " 은 매칭이 된다. 
-		&nbsp;
+	
+	&nbsp;
 			
     - hex string : ``hex string`` 은 ``wild-cards, jumps, alternatives``과 같은 3가지 특수 구조를 사용한다.
 	
@@ -193,6 +195,7 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
         uint32be(<offset or virtual address>)
         ```
         &nbsp;
+		
         아래의 예제는 PE 파일을 구분하는 규칙하는 예제이다.
         ```
         rule IsPE
