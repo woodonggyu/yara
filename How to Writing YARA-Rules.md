@@ -7,7 +7,7 @@
 ## **Writing YARA Rules**
 ``YARA Rule`` 은 쉽게 작성하고 이해할 수 있으며, C 언어와 유사한 구문을 사용한다. 
 
-YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정의)`` 로 시작한다. 식별자는 ``영숫자``와 ``밑줄 문자를 포함``할 수 있지만 ``첫 번째 문자는 숫자가 될 수 없다.`` 그리고 규칙의 식별자는 ``대소문자``를 구분하여 ``128자``를 초과할 수 없으며, 아래 표의 keyword 는 예약이 되어있어 사용이 불가능하다.
+YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정의)``로 시작한다. 식별자는 ``영숫자``와 ``밑줄 문자를 포함``할 수 있지만 ``첫 번째 문자는 숫자가 될 수 없다.`` 규칙의 식별자는 ``대소문자``를 구분하여 ``128자``를 초과할 수 없으며, 아래 표의 keyword 는 예약이 되어있어 사용이 불가능하다.
 
 | **all** | **and** | **any** | **ascii** | **at** | **condition** | **contains** |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | 
@@ -16,8 +16,12 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
 | **int32be** | **matches** | **meta** | **nocase** | **not** | **or** | **of** |
 | **private** | **rule** | **strings** | **them** | **true** | **uint8** | **uint16** |
 | **uint32** | **uint8be** | **uint16be** | **uint32be** | **wide** | | |
+
 &nbsp;
+
 ``Rule`` 은 일반적으로 ``strings(문자열 정의 섹션)`` 과 ``condition(조건 섹션)`` 두 섹션으로 구성된다. 
+
+&nbsp;
     
 - Comments : YARA Rule 에 주석을 추가할 수 있다. 단일 행 및 여러 행에 대한 주석이 모두 지원된다.
     
@@ -32,6 +36,7 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
     }
     ```
     &nbsp;
+	
 - strings:
     ``strings`` 는 세 가지 유형의 문자열(text string, hex string, pcre)로 작성이 가능하며, 식별자는 앞에 ``$`` 를 붙인다. 
     
@@ -48,6 +53,8 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
             }
             ```
             nocase 를 이용하면 foobar 문자열은 Foobar, FOOBAR, fOobar 모두 매칭된다.
+			&nbsp;
+			
         - Wide-character strings : ``wide``는 2 byte 를 하나의 글자로 읽는 인코딩에 대한 문자열을 검색할 때 사용할 수 있다. 대표적으로 Unicode가 해당된다. 단 ASCII 형태 또한 검색하고자 할 경우 ``ascii``를 추가한다.
             ```
                 rule WideCharTextExample
@@ -64,9 +71,10 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
              00 55 00 00 50 00 58 00 30      .U.P.X.0
             ```
         - Searching for full words : ``fullword``는 숫자나 문자가 올 경우 이를 구분하게 된다. 예를 들어 "UPX0" 라는 단어가 "aUPX0bb", "1UPX0" 등이 올 경우 이는 매칭이 되지 않는다. 하지만 "...UPX0", "UPX0_", " UPX0 " 은 매칭이 된다. 
-        
             &nbsp;
-    - hex string : ``hex string`` 은 ``wild-cards, jumps, alternatives``과 같은 3가지 특수 구조를 사용하여 보다 유연하게 만들 수 있다.
+			
+    - hex string : ``hex string`` 은 ``wild-cards, jumps, alternatives``과 같은 3가지 특수 구조를 사용한다.
+	
         - wile-card : ``{ }`` 사이에 hex 값을 입력하는데 이 때 모든 hex 값을 알지 못해도 ``wild_card('??')``를 사용하여 대체 할 수 있다. 
             ```
             rule WildcardExample
@@ -78,6 +86,7 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
                     $hex_string
             }
             ``` 
+			&nbsp;
 
         - jump : ``[ ]`` 사이에 ``하이픈으로 구분 된 한 쌍의 숫자``는 jump 이다. [X-Y] 는 0 <= X <= Y 의 조건을 만족해야 한다. YARA 의 이전 버전에서는 X, Y 값이 256 보다 작아야하지만, YARA 2.0 부터는 X 와 Y 에 제한이 없다. 패턴 매칭 속도를 향상시키기 위해서는 최소한의 범위로 줄여줄 필요가 있다.
         
@@ -98,8 +107,8 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
             F4 23 00 00 00 00 00 62 B4
             F4 23 15 82 A3 04 45 22 62 B4
             ```
-            
     &nbsp;
+	
     - Regular expressions : ``정규 표현식``은 YARA 의 가장 강력한 기능 중 하나로, YARA 에서 정규 표현식을 사용하기 위해서는 ``/[정규 표현식]/`` 과 같이 두 개의 슬래시(/) 안에 정규 표현식을 사용하여야 한다. String 탐지에서 사용할 수 있었던 'nocase', 'wide', 'ascii', 'fullword' 의 기능을 사용할 수 있다.
 
 &nbsp;
