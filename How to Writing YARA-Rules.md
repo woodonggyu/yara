@@ -19,9 +19,8 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
 
 &nbsp;
 
-``Rule`` 은 일반적으로 ``strings(문자열 정의 섹션)`` 과 ``condition(조건 섹션)`` 두 섹션으로 구성된다. 
+``Rule``은 일반적으로 ``strings(문자열 정의 섹션)`` 과 ``condition(조건 섹션)`` 두 섹션으로 구성된다. 
 
-&nbsp;
     
 - Comments : YARA Rule 에 주석을 추가할 수 있다. 단일 행 및 여러 행에 대한 주석이 모두 지원된다.
     
@@ -38,7 +37,7 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
     &nbsp;
 	
 - strings:
-    ``strings`` 는 세 가지 유형의 문자열(text string, hex string, pcre)로 작성이 가능하며, 식별자는 앞에 ``$`` 를 붙인다. 
+    ``strings``는 세 가지 유형의 문자열(text string, hex string, pcre)로 작성이 가능하며, 식별자는 앞에 ``$`` 를 붙인다. 
     
     - text string : " " 사이에 ASCII 인코딩을 기준으로 작성할 수 있다.
         - Case-insensitive strings : YARA 의 텍스트 문자열은 기본적으로 ``대소문자``를 구분한다. 문자열 정의의 끝에 ``nocase`` 를 추가하여 문자열을 대/소문자 구분하지 않도록 할 수 있다.
@@ -53,7 +52,7 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
             }
             ```
             nocase 를 이용하면 foobar 문자열은 Foobar, FOOBAR, fOobar 모두 매칭된다.
-			&nbsp;
+		&nbsp;
 			
         - Wide-character strings : ``wide``는 2 byte 를 하나의 글자로 읽는 인코딩에 대한 문자열을 검색할 때 사용할 수 있다. 대표적으로 Unicode가 해당된다. 단 ASCII 형태 또한 검색하고자 할 경우 ``ascii``를 추가한다.
             ```
@@ -70,8 +69,10 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
             ```
              00 55 00 00 50 00 58 00 30      .U.P.X.0
             ```
+		&nbsp;
+			
         - Searching for full words : ``fullword``는 숫자나 문자가 올 경우 이를 구분하게 된다. 예를 들어 "UPX0" 라는 단어가 "aUPX0bb", "1UPX0" 등이 올 경우 이는 매칭이 되지 않는다. 하지만 "...UPX0", "UPX0_", " UPX0 " 은 매칭이 된다. 
-            &nbsp;
+		&nbsp;
 			
     - hex string : ``hex string`` 은 ``wild-cards, jumps, alternatives``과 같은 3가지 특수 구조를 사용한다.
 	
@@ -191,7 +192,7 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
         uint16be(<offset or virtual address>)
         uint32be(<offset or virtual address>)
         ```
-        
+        &nbsp;
         아래의 예제는 PE 파일을 구분하는 규칙하는 예제이다.
         ```
         rule IsPE
@@ -221,6 +222,7 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
         }
         ```
         &nbsp;
+		
         집합의 요소는 아래와 같이 명시적으로 열거하거나 와일드 카드를 사용하여 지정할 수 있다.
         ```
         rule OfExample2
@@ -246,6 +248,7 @@ YARA 각각의 Rule 은 ``keyword 규칙`` 과 ``규칙 식별자(사용자 정�
         }
         ```
         &nbsp;
+		
         문자열의 수는 상수 외에도 아래와 같이 ``all`` 또는 ``any`` 와 같은 키워드를 사용할 수도 있다.
         
         ```
